@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Полицейский участок | Архив дел</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Playfair+Display:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+</head>
+
+<body>
+  <div class="light-switch">
+    <button id="lightToggle">Сменить освещение</button>
+  </div>
+
+  <div class="room-container">
+    <div class="cork-board">
+      <div class="sticky-note">
+        <div class="pin"></div>
+        <div class="pin-hole"></div>
+        <div class="sticky-note-torn-edge"></div>
+        Первая заметка
+      </div>
+      <div class="sticky-note">
+        <div class="pin"></div>
+        <div class="pin-hole"></div>
+        <div class="sticky-note-torn-edge"></div>
+        Вторая заметка
+      </div>
+      <div class="sticky-note">
+        <div class="pin"></div>
+        <div class="pin-hole"></div>
+        <div class="sticky-note-torn-edge"></div>
+        Третья заметка
+      </div>
+      <div id="seoulMap" class="seoul-map"></div>
+    </div>
+
+    <div class="desk">
+      <div id="radio" class="radio">
+        <div class="antenna-main"></div>
+        <div class="antenna-secondary"></div>
+        <div class="radio-display">
+          <div class="frequency-scale"></div>
+          <div class="frequency-text">FM 107.5</div>
+        </div>
+        <div class="radio-indicator"></div>
+        <div class="radio-fm-label">FM</div>
+        <div class="radio-speaker"></div>
+        <div class="radio-knob-left"></div>
+        <div class="radio-knob-center"></div>
+        <div class="radio-knob-right"></div>
+        <div class="radio-text">РАДИО</div>
+      </div>
+      <div id="documents" class="documents">
+        <div class="third-sheet"></div>
+        <div class="paperclip"></div>
+        <div class="stamp"></div>
+        <span class="documents-text">ДОКУМЕНТЫ</span>
+      </div>
+      <div id="laptop" class="laptop">
+        <div class="indicator"></div>
+        <div class="laptop-screen">
+          <div id="laptopText">WARNING</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальные окна -->
+  <div id="dialogBox" class="dialog-box hidden">
+    <div class="dialog-content">
+      <p id="dialogText"></p>
+    </div>
+    <button id="continueDialog">Продолжить</button>
+  </div>
+
+  <div id="noteModal" class="modal hidden">
+    <div class="modal-content note">
+      <div id="noteContent"></div>
+      <div class="modal-buttons">
+        <button id="backNote">Назад</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="documentModal" class="modal hidden">
+    <div class="modal-content document">
+      <div id="documentContent"></div>
+      <div class="modal-buttons">
+        <button id="translateDocument">Перевести</button>
+        <button id="backDocument">Назад</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="laptopModal" class="modal hidden">
+    <div class="modal-content laptop-screen-full"></div>
+  </div>
+
+  <div id="youtubeModal" class="modal hidden">
+    <div class="modal-content youtube-player">
+      <div id="youtubePlayer"></div>
+      <button id="backYoutube">Закрыть</button>
+    </div>
+  </div>
+
+  <div id="weatherModal" class="modal hidden">
+    <div class="modal-content weather-display">
+      <div class="weather-header">
+        <h2>Погода в Сеуле</h2>
+        <div class="weather-location">Сеул, Южная Корея</div>
+      </div>
+      <div class="weather-body">
+        <div class="weather-current">
+          <div id="weatherIconLarge" class="weather-icon-large"></div>
+          <div class="weather-temp">
+            <div id="weatherTemp" class="weather-temp-now">23°C</div>
+            <div id="weatherCondition" class="weather-condition">Ясно</div>
+          </div>
+          <div class="weather-details">
+            <div class="weather-detail">
+              <div class="detail-icon humidity-icon"></div>
+              <div id="weatherHumidity" class="detail-value">45%</div>
+              <div class="detail-label">Влажность</div>
+            </div>
+            <div class="weather-detail">
+              <div class="detail-icon wind-icon"></div>
+              <div id="weatherWind" class="detail-value">3 m/s</div>
+              <div class="detail-label">Ветер</div>
+            </div>
+            <div class="weather-detail">
+              <div class="detail-icon pressure-icon"></div>
+              <div id="weatherPressure" class="detail-value">1013 hPa</div>
+              <div class="detail-label">Давление</div>
+            </div>
+          </div>
+        </div>
+        <div class="weather-forecast">
+          <div class="forecast-day">
+            <div class="forecast-date">Завтра</div>
+            <div class="forecast-icon sunny"></div>
+            <div class="forecast-temp">25°C</div>
+          </div>
+          <div class="forecast-day">
+            <div class="forecast-date">Среда</div>
+            <div class="forecast-icon partly-cloudy"></div>
+            <div class="forecast-temp">24°C</div>
+          </div>
+          <div class="forecast-day">
+            <div class="forecast-date">Четверг</div>
+            <div class="forecast-icon rainy"></div>
+            <div class="forecast-temp">21°C</div>
+          </div>
+          <div class="forecast-day">
+            <div class="forecast-date">Пятница</div>
+            <div class="forecast-icon cloudy"></div>
+            <div class="forecast-temp">22°C</div>
+          </div>
+          <div class="forecast-day">
+            <div class="forecast-date">Суббота</div>
+            <div class="forecast-icon sunny"></div>
+            <div class="forecast-temp">26°C</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-buttons-container">
+        <button id="backWeather" class="modal-back-button">Назад</button>
+        <button id="translateWeather" class="modal-translate-button">번역</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="passwordModal" class="modal hidden">
+    <div class="modal-content password-display">
+      <div class="password-header">
+        <h2>Введите пароль</h2>
+      </div>
+      <div class="password-body">
+        <div class="password-input-container">
+          <input type="password" id="passwordInput" maxlength="4" placeholder="****" autocomplete="off">
+        </div>
+        <div class="password-buttons">
+          <button id="submitPassword" class="password-button">Подтвердить</button>
+          <button id="backPassword" class="password-button">Назад</button>
+        </div>
+        <div id="passwordError" class="password-error hidden">Неверный пароль. Попробуйте снова.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Черный экран с текстом "ДОБРО ПОЖАЛОВАТЬ!" -->
+  <div id="blackScreen" class="black-screen hidden">
+    <div id="welcomeText" class="typing-text">ДОБРО ПОЖАЛОВАТЬ!</div>
+  </div>
+
+  <!-- Модальное окно с анкетой персонажа -->
+  <div id="characterModal" class="modal hidden">
+    <div class="modal-content character-profile">
+      <div class="character-header">
+        <h2>Досье Иллюзиониста</h2>
+        <div class="security-badge">Личное</div>
+      </div>
+
+      <div class="character-content">
+        <div class="character-info-container">
+          <div class="info-group">
+            <div class="info-label">Имя:</div>
+            <div class="info-value">До Ён</div>
+          </div>
+
+          <div class="info-group">
+            <div class="info-label">Фамилия:</div>
+            <div class="info-value">Гиль</div>
+          </div>
+
+          <div class="info-group">
+            <div class="info-label">Возраст:</div>
+            <div class="info-value">30 лет</div>
+          </div>
+
+          <div class="info-group">
+            <div class="info-label">Место проживания:</div>
+            <div class="info-value">Сеул, Корея, Район Каннам</div>
+          </div>
+
+          <div class="info-group">
+            <div class="info-label">Род деятельности:</div>
+            <div class="info-value">Фокусник</div>
+          </div>
+
+          <div class="info-group">
+            <div class="info-label">Статус:</div>
+            <div class="info-value">Свободен</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="character-stats">
+        <div class="stat-group">
+          <div class="stat-title">Внешние данные</div>
+          <div class="stat-bars">
+            <div class="stat-item">
+              <div class="stat-label">Обаяние</div>
+              <div class="stat-bar-container">
+                <div class="stat-bar" style="width: 95%;"></div>
+              </div>
+              <div class="stat-value">95%</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Харизма</div>
+              <div class="stat-bar-container">
+                <div class="stat-bar" style="width: 97%;"></div>
+              </div>
+              <div class="stat-value">97%</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Загадочность</div>
+              <div class="stat-bar-container">
+                <div class="stat-bar" style="width: 100%;"></div>
+              </div>
+              <div class="stat-value">100%</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-group">
+          <div class="stat-title">Мастерство</div>
+          <div class="stat-bars">
+            <div class="stat-item">
+              <div class="stat-label">Иллюзии</div>
+              <div class="stat-bar-container">
+                <div class="stat-bar" style="width: 98%;"></div>
+              </div>
+              <div class="stat-value">98%</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Ловкость рук</div>
+              <div class="stat-bar-container">
+                <div class="stat-bar" style="width: 96%;"></div>
+              </div>
+              <div class="stat-value">96%</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label">Сексуальность</div>
+              <div class="stat-bar-container">
+                <div class="stat-bar" style="width: 99%;"></div>
+              </div>
+              <div class="stat-value">99%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="character-description">
+        <div class="desc-title">Портрет загадочного мастера</div>
+        <div class="desc-text">
+          До Ён — высокий мужчина (184 см), чья элегантная фигура притягивает взгляды. Его лицо — идеальное полотно для иллюзий: овальное, с мягкими, но выразительными чертами. Высокие скулы и аккуратный нос подчеркивают его мужественность, а миндалевидные тёмные глаза скрывают за собой глубину вселенных.
+          <br><br>
+          Его волосы — чёрные, как самая тёмная ночь, слегка волнистые, средней длины — иногда кажется, будто они меняют свою форму в зависимости от освещения. Светлая, почти фарфоровая кожа без изъянов дополняет образ человека, будто существующего между двумя мирами. Его стройное, подтянутое телосложение (70-75 кг) идеально сбалансировано, как и все его движения.
+          <br><br>
+          Характер До Ёна — это лабиринт зеркал, в котором каждое отражение показывает разные грани его души. Он одновременно добр и мудр, но в глубине его глаз танцуют тени печали и одиночества. Он видит тех, кто страдает, и протягивает им руку, даря надежду своими волшебными иллюзиями.
+          <br><br>
+          Его чувство юмора и магнетизм притягивают людей, но они никогда не могут полностью понять его. Он остается загадкой даже для тех, кто думает, что знает его лучше всего.
+        </div>
+      </div>
+
+      <div class="mission-log">
+        <div class="log-title">История жизни</div>
+        <div class="log-content">
+          <div class="log-entry">
+            <div class="log-date">Детство</div>
+            <div class="log-text">
+              До Ён родился в Сеуле в холодную осеннюю ночь. Он был тёмноволосым, молчаливым ребёнком, который с раннего возраста отличался наблюдательностью и загадочным поведением. Его мать, одинокая женщина, зарабатывала на жизнь, работая в небольшом кафе неподалёку от их крошечной квартиры. Отец был для него лишь размытым силуэтом в памяти — человек, который однажды ушёл и не вернулся.
+              <br><br>
+              С детства До Ён чувствовал, что он иной. Дети на улице его избегали, взрослые редко замечали. Окружающие говорили, что он будто растворяется в тени — стоило отвернуться, как его уже не было. Сам он никогда не понимал, почему так происходит. Однажды он спросил мать, почему люди его не замечают, и она лишь погладила его по голове, печально улыбнувшись.
+              <br><br>
+              Но однажды он встретил человека, который видел его по-настоящему. Это был старик, владелец старого цирка, который находился на грани закрытия. Он приметил мальчика, когда тот бродил неподалёку, и предложил ему посмотреть представление. Впервые в жизни До Ён почувствовал, что он нужен кому-то.
+            </div>
+          </div>
+          <div class="log-entry">
+            <div class="log-date">Юность</div>
+            <div class="log-text">
+              Цирк стал для него домом. Он быстро освоил трюки и фокусы, учился у старших артистов. Особенно его завораживали иллюзии: исчезновения, теневые фигуры, зеркальные лабиринты. Он понимал, что в этом есть нечто большее, чем просто ловкость рук.
+              <br><br>
+              Но с годами цирк угасал. Владелец умер, представления становились всё реже, а зрители — всё менее заинтересованными. Однако До Ён не сдавался. Он продолжал выступать, путешествуя по разным площадкам — паркам аттракционов, фестивалям, уличным сценам. Он был таинственным фокусником, который появлялся и исчезал, оставляя после себя только легенды.
+            </div>
+          </div>
+          <div class="log-entry">
+            <div class="log-date">Трагедия <span class="status-critical" style="margin-left: 15px; font-size: 14px;">Мне жаль...</span></div>
+            <div class="log-text">
+              Именно на одном из таких представлений произошла роковая ошибка. До Ён пригласил на сцену мужчину для своего коронного трюка с исчезновением. Всё шло по плану, но когда он щёлкнул пальцами, человек действительно исчез. На этот раз не было двойников, спрятанных люков или зеркал. Мужчина просто… пропал.
+              <br><br>
+              До Ён пытался вернуть его, но не смог. И чем больше он искал объяснений, тем больше люди отворачивались от него. Спустя время стало известно, что исчезнувший был отцом двоих маленьких детей. Это окончательно разрушило его репутацию. Люди начали бояться его, шептаться за спиной, рассказывать друг другу страшные истории.
+            </div>
+          </div>
+          <div class="log-entry">
+            <div class="log-date">Настоящее</div>
+            <div class="log-text">
+              Сейчас, в свои 30 лет, До Ён живёт в старом, заброшенном цирке. Новое поколение уже не помнит его лица, но слухи остались. Никто не решается заходить внутрь, но иногда на улицах можно увидеть его силуэт, а в ближайшем кафе — загадочного бариста, который не привлекает к себе внимания, но всегда кажется знакомым.
+              <br><br>
+              Иногда, в тёмных переулках, шёпот ветра приносит вопрос:
+              — Ты видишь меня?
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="character-footer">
+        <div class="footer-warning" style="color: #ff0000;">А ты...Видишь меня?</div>
+        <button id="backFromCharacter" class="character-back-button">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Музыкальный плеер -->
+  <div id="musicPlayer" class="music-player hidden">
+    <div class="player-controls">
+      <button id="prevSong">⏮️</button>
+      <button id="pausePlay">⏸️</button>
+      <button id="nextSong">⏭️</button>
+    </div>
+    <div class="song-info">
+      <span id="currentSong"></span>
+    </div>
+    <input type="range" id="seekBar" min="0" max="100" value="0">
+  </div>
+
+  <!-- Аудио-элементы -->
+  <audio id="audio"></audio>
+  <audio id="scarySound" src="https://soundbible.com/mp3/horror-ambience-6-24430.mp3"></audio>
+  <audio id="laughSound" src="https://soundbible.com/mp3/evil-demonic-laugh-6925.mp3"></audio>
+
+  <!-- Эффекты -->
+  <div id="jumpscare" class="jumpscare hidden"></div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
